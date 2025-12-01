@@ -6,14 +6,42 @@ import type {
     ICreateMenuParams,
     IUpdateMenuParams,
     IMenu,
+    ISearchParams,
+    IUserSearchParams,
+    ResultData,
+    ICreateUserParams,
     IUser,
-    ISearchParams
+    IUpdateUserParams,
+    IReportData,
+    ILineData,
+    IPieData,
+    IRadarData,
 } from '../types/api';
-
 export default {
     // 登录
     login(params: ILoginParams) {
         return request.post('/users/login', params);
+    },
+    // 获取用户信息
+    getUserInfo() {
+        return request.get<IUser>('/users/getUserInfo');
+    },
+
+    // 获取用户列表
+    getUserList(params: IUserSearchParams) {
+        return request.get<ResultData<IUser>>('/users/list', params);
+    },
+    // 创建用户
+    createUser(params: ICreateUserParams) {
+        return request.post('/users/create', params);
+    },
+    // 创建用户
+    editUser(params: IUpdateUserParams) {
+        return request.post('/users/edit', params);
+    },
+    // 删除和批量删除用户
+    delUser(params: { userIds: number[] }) {
+        return request.post('/users/delete', params);
     },
 
     // 获取部门列表
@@ -33,10 +61,6 @@ export default {
     deleteDept(params: { _id: string }) {
         return request.post('/dept/delete', params);
     },
-    // 获取用户
-    getUserList() {
-        return request.get('/users/list');
-    },
     getAllUserList() {
         return request.get<IUser[]>('/users/all/list');
     },
@@ -44,6 +68,8 @@ export default {
     getRoleList() {
         return request.get('/roles/list');
     },
+
+    // 菜单模块
     // 创建菜单参数
     createMenu(params: ICreateMenuParams) {
         return request.post('/menu/create', params);
@@ -59,5 +85,23 @@ export default {
     // 删除菜单
     deleteMenu(params: { _id: string }) {
         return request.post('/menu/delete', params);
+    },
+
+    // dashboard 模块
+
+    getReportData() {
+        return request.get<IReportData>('/order/dashboard/getReportData');
+    },
+    getLineData() {
+        return request.get<ILineData>('/order/dashboard/getLineData');
+    },
+    getPieCityData() {
+        return request.get<IPieData>('/order/dashboard/getPieCityData');
+    },
+    getPieAgeData() {
+        return request.get<IPieData>('/order/dashboard/getPieAgeData');
+    },
+    getRadarData() {
+        return request.get<IRadarData>('/order/dashboard/getRadarData');
     },
 };

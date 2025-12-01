@@ -19,3 +19,13 @@ export function formatDateToChinese(dateString: string): string {
             .padStart(2, '0')}秒`
     );
 }
+
+export function formateState(state: number) {
+    if (state === 1) {
+        return '在职';
+    } else if (state === 2) {
+        return '试用期';
+    } else {
+        return '离职';
+    }
+}
