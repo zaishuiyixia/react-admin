@@ -1,11 +1,11 @@
 import { MenuFoldOutlined, MenuUnfoldOutlined } from '@ant-design/icons';
-import { Dropdown, Button } from 'antd';
+import { Dropdown, Button, Switch } from 'antd';
 import type { MenuProps } from 'antd';
 import storage from '../../utils/storage';
 import styles from './index.module.less';
 import { useStore } from '../../store';
 export default function NavHeader() {
-    const { collapsed, updateCollapsed } = useStore();
+    const { collapsed, updateCollapsed, isDark, updateTheme } = useStore();
     const items: MenuProps['items'] = [
         {
             key: 'email',
@@ -26,6 +26,18 @@ export default function NavHeader() {
     const toggleCollapsed = () => {
         updateCollapsed();
     };
+
+    const handlerSwitch = (isDark: boolean) => {
+        if (isDark) {
+            document.documentElement.dataset.theme = 'dark';
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.dataset.theme = 'light';
+            document.documentElement.classList.remove('dark');
+        }
+        updateTheme(isDark);
+    };
+
     return (
         <div className={styles.navHeader}>
             <div className={styles.left}>
@@ -41,6 +53,7 @@ export default function NavHeader() {
                 />
             </div>
             <div className={styles.right}>
+                <Switch checkedChildren="暗黑" unCheckedChildren="默认" checked={isDark} onChange={handlerSwitch} />
                 <Dropdown menu={{ items, onClick }} trigger={['click']}>
                     <span className={styles.nickName}>Admin</span>
                 </Dropdown>
