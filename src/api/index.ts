@@ -26,6 +26,10 @@ export default {
     getUserInfo() {
         return request.get<IUser>('/users/getUserInfo');
     },
+    // 获取权限列表
+    getPermissionList() {
+        return request.get<{ menuList: IMenu[]; buttonList: string[] }>('/users/getPermissionList');
+    },
 
     // 获取用户列表
     getUserList(params: IUserSearchParams) {

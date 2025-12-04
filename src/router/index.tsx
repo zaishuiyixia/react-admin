@@ -1,47 +1,57 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
-
-import Layout from '../layout';
+import { lazy } from 'react';
+import { lazyLoad } from './LazyLoad';
 import NotFound from '../views/NotFound';
-import Welcome from '../views/welcome';
+import NotFound403 from '../views/403';
 import Login from '../views/login';
-import Dashboard from '../views/dashboard';
-import User from '../views/user';
-import Depth from '../views/dept';
-import Menu from '../views/menu';
-import Role from '../views/role';
+import Layout from '../layout';
+import AuthLoader from './AuthLoader';
 
-const router = createBrowserRouter([
+export const router = [
     {
+        id: 'layout',
         element: <Layout />,
+        loader: AuthLoader,
         children: [
             {
                 path: '/welcome',
-                element: <Welcome />,
+                element: lazyLoad(lazy(() => import('../views/welcome'))),
             },
             {
                 path: '/dashboard',
-                element: <Dashboard />,
+                element: lazyLoad(lazy(() => import('../views/dashboard'))),
             },
             {
                 path: '/userList',
-                element: <User />,
+                element: lazyLoad(lazy(() => import('../views/user'))),
+                meta: {
+                    auth: true,
+                },
             },
             {
                 path: '/deptList',
-                element: <Depth />,
+                element: lazyLoad(lazy(() => import('../views/dept'))),
+                meta: {
+                    requireAuth: true,
+                    auth: true,
+                },
             },
             {
                 path: '/menuList',
-                element: <Menu />,
+                element: lazyLoad(lazy(() => import('../views/menu'))),
             },
             {
                 path: '/roleList',
-                element: <Role />,
-            }
+                element: lazyLoad(lazy(() => import('../views/role'))),
+            },
         ],
     },
     { path: '/', element: <Navigate to="/welcome" /> },
     { path: '/login', element: <Login /> },
-    { path: '*', element: <NotFound /> }
-]);
-export default router;
+    { path: '/403', element: <NotFound403 /> },
+    { path: '*', element: <NotFound /> },
+];
+
+const AppRouter = createBrowserRouter(router);
+
+export default AppRouter;

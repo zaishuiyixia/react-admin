@@ -1,3 +1,5 @@
+import type { IMenu } from '../types/api';
+
 // 日期格式函数
 export function formatDateToChinese(dateString: string): string {
     // 将输入的日期字符串解析为 Date 对象
@@ -29,3 +31,49 @@ export function formateState(state: number) {
         return '离职';
     }
 }
+
+// 获取菜单的path
+export function getMenuPath(list: IMenu[]): string[] {
+    return list.reduce((res: string[], item: IMenu) => {
+        return res.concat(Array.isArray(item.children) && !item.buttons ? getMenuPath(item.children) : item.path + '');
+    }, []);
+}
+
+interface RouteItem {
+    path?: string;
+    id?: string;
+    element?: React.ReactNode;
+    meta?: {
+        auth?: boolean;
+        requireAuth?: boolean;
+    };
+    children?: RouteItem[];
+    [key: string]: unknown;
+}
+
+// 递归获取路由对象的路径
+export const searchRoute = (path: string, routes: RouteItem[]): RouteItem | undefined => {
+    for (const item of routes) {
+        if (item.path === path) return item;
+        if (item.children) {
+            const res = searchRoute(path, item.children);
+            if (res) return res;
+        }
+    }
+    return undefined;
+};
+
+
+export const findTreeNode = (treeData: IMenu[], pathName: string, path: string[]): string[] => {
+    if (!treeData) return [];
+    for (const item of treeData) {
+        path.push(item.menuName);
+        if (item.path === pathName) return path;
+        if (item.children?.length) {
+            const list = findTreeNode(item.children, pathName, path);
+            if (list.length) return list;
+        }
+        path.pop();
+    }
+    return [];
+};
