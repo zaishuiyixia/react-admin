@@ -4,6 +4,8 @@ import type { MenuProps } from 'antd';
 import storage from '../../utils/storage';
 import styles from './index.module.less';
 import { useStore } from '../../store';
+import Breadcrumb from './BreadCrumb';
+
 export default function NavHeader() {
     const { collapsed, updateCollapsed, isDark, updateTheme } = useStore();
     const items: MenuProps['items'] = [
@@ -51,6 +53,7 @@ export default function NavHeader() {
                         height: 50,
                     }}
                 />
+                <Breadcrumb />
             </div>
             <div className={styles.right}>
                 <Switch checkedChildren="暗黑" unCheckedChildren="默认" checked={isDark} onChange={handlerSwitch} />
