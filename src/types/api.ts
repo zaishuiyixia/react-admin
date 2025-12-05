@@ -85,6 +85,7 @@ export interface IPermission {
 export type IMenu = ICreateMenuParams & {
     _id: string;
     createTime: string;
+    menuState?: number;
     buttons?: IMenu[];
     children?: IMenu[];
 } & Omit<TreeDataNode, 'icon'>; // 排除冲突的 icon 属性
