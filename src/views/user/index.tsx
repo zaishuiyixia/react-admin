@@ -16,6 +16,7 @@ import CreateUser from "./CreateUser";
 import { useAntdTable } from "ahooks";
 import type { IUser, IUserSearchParams } from "../../types/api";
 import SearchForm from "../../components/SearchForm";
+import AuthButton from "../../components/AuthButton";
 
 export default function UserList() {
   const [form] = Form.useForm();
@@ -187,9 +188,13 @@ export default function UserList() {
         <div className="header">
           <div className="title">用户列表</div>
           <div className="action">
-            <Button type="primary" onClick={handleCreate}>
+            <AuthButton
+              auth="user@create"
+              type="primary"
+              onClick={handleCreate}
+            >
               新增
-            </Button>
+            </AuthButton>
             <Button type="primary" danger onClick={handlePatchConfirm}>
               批量删除
             </Button>
