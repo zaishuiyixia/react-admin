@@ -88,6 +88,8 @@ export default defineConfig(({ mode }: ConfigEnv) => {
           //         return 'views-' + moduleName;
           //     }
           // },
+
+          //调整打包目录解构
           chunkFileNames: "assets/js/[name]-[hash].js",
           entryFileNames: "assets/js/[name]-[hash].js",
           assetFileNames: "assets/[ext]/[name]-[hash].[ext]"
